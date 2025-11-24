@@ -8,13 +8,14 @@ public class GoogleAnalytics : IAnalyticRecord
     public int Views { get; set; }
     public int Sessions { get; set; }
 
-    public void Reset()
+    public bool TryReset()
     {
         Date = default;
         Page = null;
         Users = 0;
         Views = 0;
         Sessions = 0;
+        return true;
     }
 
     public static IAnalyticRecord CreateRandom(DateTime date, string page)

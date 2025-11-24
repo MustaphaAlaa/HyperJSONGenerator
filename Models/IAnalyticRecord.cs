@@ -1,6 +1,8 @@
+using Microsoft.Extensions.ObjectPool;
+
 namespace Metriflow.HyperJSONGenerator;
 
-public interface IAnalyticRecord
+public interface IAnalyticRecord : IResettable
 {
     public DateTime Date { get; set; }
     public string Page { get; set; }

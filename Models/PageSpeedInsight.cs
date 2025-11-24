@@ -18,11 +18,12 @@ public class PageSpeedInsight : IAnalyticRecord
             LCP_MS = Random.Shared.Next(1_800_000)
         };
 
-    public void Reset()
+    public bool TryReset()
     {
         Date = default;
         Page = null;
         PerformanceScore = 0;
         LCP_MS = 0;
+        return true;
     }
 }
