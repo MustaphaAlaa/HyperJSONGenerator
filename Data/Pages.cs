@@ -1,4 +1,4 @@
-namespace FileCreator;
+namespace Metriflow.HyperJSONGenerator;
 
 public class Pages
 {
