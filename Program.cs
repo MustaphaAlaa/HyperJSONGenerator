@@ -16,11 +16,12 @@ internal class Program
 
     private static async Task Main(string[] args)
     {
+        System.Console.WriteLine("Starting JSON files generation...");
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
         int days = 365;
-        int years = 20;
+        int years = 40;
         int hours = 24;
 
         int duration = days * years * hours;
