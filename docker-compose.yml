@@ -1,0 +1,10 @@
+services:
+  hyperjsongenerator:
+    build: .
+    container_name: hyperjsongenerator
+    volumes:
+      - .:/app/ 
+    
+
+
+ 
