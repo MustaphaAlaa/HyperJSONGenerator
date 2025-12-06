@@ -34,7 +34,7 @@ public class JsonsGenerator
         var obj = new T();
 
         var random = Random.Shared;
-        var threshold = 1 * 1024 * 1024;
+        var threshold = 2 * 1024 * 1024;
 
         for (int i = 0; i < number; i++, time += hour)
         {
@@ -54,7 +54,6 @@ public class JsonsGenerator
         if (jsonWriter.BytesPending > 0)
             await jsonWriter.FlushAsync();
 
-        await jsonWriter.FlushAsync();
         jsonWriter.WriteEndArray();
         Console.WriteLine($"Total {typeof(T).Name} objects created {total:N0}");
     }
