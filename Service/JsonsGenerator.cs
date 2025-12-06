@@ -1,42 +1,73 @@
 using System.Text.Json;
-using Metriflow.HyperJSONGenerator.CustomPolicies;
-using Microsoft.Extensions.ObjectPool;
-
 namespace Metriflow.HyperJSONGenerator.Service;
 
 public class JsonsGenerator
 {
-    public static async Task Generate<T>(List<string> pages, int number, string fileName)
-        where T : class, IAnalyticRecord, new()
+    public static async Task Generate<T>(int number, string fileName)
+        where T : struct, IAnalyticRecord
     {
-        await using var file = File.CreateText(fileName);
-        await file.WriteAsync("[");
+         var pages = new byte[(int)enPages.count - 1];
 
-        var first = true;
-        var date = new DateTime(1995, 1, 1);
-        var count = 0;
-        var pool = RecordPool<T>.Pool;
-        for (int i = 0; i < number; i++, date = date.AddHours(1))
+        for (byte i = 1; i < (int)enPages.count; i++)
         {
-            for (int pageIdx = 0; pageIdx < pages.Count; pageIdx++)
+            pages[i - 1] = i;
+        }
+
+
+        await using var stream = new FileStream(
+    fileName,
+    FileMode.Create,
+    FileAccess.Write,
+    FileShare.None,
+    bufferSize: 1024 * 1024,
+    useAsync: true
+);
+        await using var jsonWriter = new Utf8JsonWriter(stream, JsonSetting.JsonWriterOptions);
+        jsonWriter.WriteStartArray();
+        jsonWriter.Flush();
+
+        var date = new DateTime(1940, 1, 1);
+        var time = date.Ticks;
+        var hour = TimeSpan.TicksPerHour;
+        var total = 0;
+
+
+        var obj = new T();
+
+        var random = Random.Shared;
+        var threshold = 1 * 1024 * 1024;
+
+        for (int i = 0; i < number; i++, time += hour)
+        {
+            foreach (var page in pages)
             {
-                count++;
-
-                // var record = (T)T.CreateRandom(date, pages[pageIdx]);
-                var record = pool.Get();
-
-                if (!first)
-                    await file.WriteAsync(",\n");
-
-                string json = JsonSerializer.Serialize(record);
-                await file.WriteAsync(json);
-
-                first = false;
-                pool.Return(record);
+                total++;
+                obj.CreateRandom(time, page, random);
+                WriteToJson(jsonWriter, obj);
+                if (jsonWriter.BytesPending >= threshold)
+                {
+                    await jsonWriter.FlushAsync();
+                }
             }
         }
 
-        await file.WriteAsync("]");
-        System.Console.WriteLine($"{typeof(T).Name} objects created {count}");
+        if (jsonWriter.BytesPending > 0)
+        {
+            await jsonWriter.FlushAsync();
+        }
+        await jsonWriter.FlushAsync();
+        jsonWriter.WriteEndArray();
+        System.Console.WriteLine($"Total {typeof(T).Name} objects created {total:N0}");
     }
+
+    private static void WriteToJson<T>(Utf8JsonWriter writer, T obj) where T : struct, IAnalyticRecord
+    {
+        writer.WriteStartObject();
+        writer.WriteNumber("Date", obj.Date);
+        writer.WriteNumber("Page", obj.Page);
+
+        obj.WriteToJson(writer);
+        
+        writer.WriteEndObject();
+    } 
 }

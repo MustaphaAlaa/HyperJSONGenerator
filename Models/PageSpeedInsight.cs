@@ -1,29 +1,26 @@
+using System.Text.Json;
+
 namespace Metriflow.HyperJSONGenerator;
 
-public class PageSpeedInsight : IAnalyticRecord
+public struct PageSpeedInsight : IAnalyticRecord
 {
-    public DateTime Date { get; set; }
-    public string Page { get; set; }
+    public long Date { get; set; }
+    public byte Page { get; set; }
 
     public double PerformanceScore { get; set; }
-    public double LCP_MS { get; set; }
+    public double LCP_MS { get; set; } 
 
-
-    public static IAnalyticRecord CreateRandom(DateTime date, string page)
-        => new PageSpeedInsight()
+    public   void CreateRandom(long date, byte page, Random random)     
         {
-            Date = date,
-            Page = page,
-            PerformanceScore = Random.Shared.Next(100),
-            LCP_MS = Random.Shared.Next(1_800_000)
-        };
+            Date = date;
+            Page = page;
+            PerformanceScore = random.Next(100);
+            LCP_MS = random.Next(1,1_800_000);
+        }
 
-    public bool TryReset()
+    public void WriteToJson(Utf8JsonWriter writer)
     {
-        Date = default;
-        Page = null;
-        PerformanceScore = 0;
-        LCP_MS = 0;
-        return true;
-    }
+        writer.WriteNumber("PerformanceScore", PerformanceScore);
+        writer.WriteNumber("LCP_MS", LCP_MS);
+    } 
 }

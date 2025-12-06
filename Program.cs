@@ -5,8 +5,7 @@ namespace Metriflow.HyperJSONGenerator;
 
 internal class Program
 {
-    public static List<String> pages = (new Pages()).GetPages();
-
+ 
     static string projectRoot = Path.GetFullPath(
         Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Json-Files/")
     );
@@ -16,21 +15,25 @@ internal class Program
 
     private static async Task Main(string[] args)
     {
+        System.Console.WriteLine("Start generating  json files.....");
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
         int days = 365;
-        int years = 20;
+        int years = 1850;
         int hours = 24;
 
         int duration = days * years * hours;
 
-        var GoogleAnalyticsTask = JsonsGenerator.Generate<GoogleAnalytics>(pages, duration, _googleAnalyticsFileName);
+        var GoogleAnalyticsTask = JsonsGenerator.Generate<GoogleAnalytics>(duration, _googleAnalyticsFileName);
         var PageSpeedInsightTask =
-            JsonsGenerator.Generate<PageSpeedInsight>(pages, duration, _pageSpeedInsightFileName);
+            JsonsGenerator.Generate<PageSpeedInsight>(duration, _pageSpeedInsightFileName);
         await Task.WhenAll(GoogleAnalyticsTask, PageSpeedInsightTask);
-
         stopwatch.Stop();
-        Console.WriteLine($"All files are created in {stopwatch.ElapsedMilliseconds / 1000} sec");
+
+        var lessThanSecond = stopwatch.ElapsedMilliseconds < 1000;
+        var time = lessThanSecond ? stopwatch.ElapsedMilliseconds : stopwatch.ElapsedMilliseconds / 1000;
+        var timeUnit = lessThanSecond ? "ms" : "sec";
+        Console.WriteLine($"All files are created in {time}/{timeUnit}");
     }
 }
