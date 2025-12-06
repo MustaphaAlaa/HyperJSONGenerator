@@ -9,7 +9,7 @@ public struct GoogleAnalytics : IAnalyticRecord
     public int Users { get; set; }
     public int Views { get; set; }
     public int Sessions { get; set; }
-    public void CreateRandom(long date, byte page, Random random)
+    public void SetRandoms(long date, byte page, Random random)
 
     {
         this.Date = date;

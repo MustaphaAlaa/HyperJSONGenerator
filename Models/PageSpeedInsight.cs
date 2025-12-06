@@ -10,7 +10,7 @@ public struct PageSpeedInsight : IAnalyticRecord
     public double PerformanceScore { get; set; }
     public double LCP_MS { get; set; } 
 
-    public   void CreateRandom(long date, byte page, Random random)     
+    public   void SetRandoms(long date, byte page, Random random)     
         {
             Date = date;
             Page = page;
