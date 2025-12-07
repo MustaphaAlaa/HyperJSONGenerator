@@ -100,4 +100,3 @@ For each analytic record type:
   - > **.NET 9 is required.**
 - Build: `dotnet build`
 - run: `dotnet run`
-````
