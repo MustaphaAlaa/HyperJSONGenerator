@@ -19,23 +19,25 @@ Originally built as the data feeder for the [Metriflow analytics pipeline projec
 
 ## 📂 Project Structure
 
+HyperJSONGenerator:
 
-HyperJSONGenerator
+```HyperJSONGenerator
 │
-├─ Service
+├─ Service/
 │   └─ JsonsGenerator.cs
 │
-├─ Models
+├─ Models/
 │   ├─ GoogleAnalytics.cs
 │   ├─ PageSpeedInsight.cs
 │   └─ IAnalyticRecord.cs
 │
-├─ Json-Files
+├─ Json-Files/
 │
 ├─ Program.cs
 ├─ Dockerfile
 ├─ docker-compose.yml
 └─ README.md
+```
 
 ## ⚙️ How It Works
 
@@ -98,3 +100,4 @@ For each analytic record type:
   - > **.NET 9 is required.**
 - Build: `dotnet build`
 - run: `dotnet run`
+````
