@@ -19,18 +19,23 @@ Originally built as the data feeder for the [Metriflow analytics pipeline projec
 
 ## 📂 Project Structure
 
-/HyperJSONGenerator
-├── Service/
-│ └── JsonsGenerator.cs
-├── Models/
-│ ├── GoogleAnalytics.cs
-│ ├── PageSpeedInsight.cs
-│ └── IAnalyticRecord.cs
-├── Json-Files/
-├── Program.cs
-├── Dockerfile
-├── docker-compose.yml
-└── README.md
+
+HyperJSONGenerator
+│
+├─ Service
+│   └─ JsonsGenerator.cs
+│
+├─ Models
+│   ├─ GoogleAnalytics.cs
+│   ├─ PageSpeedInsight.cs
+│   └─ IAnalyticRecord.cs
+│
+├─ Json-Files
+│
+├─ Program.cs
+├─ Dockerfile
+├─ docker-compose.yml
+└─ README.md
 
 ## ⚙️ How It Works
 
